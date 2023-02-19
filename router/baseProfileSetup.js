@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const StudentProfile = require("../models/StudentProfile")
 const FacultyProfile = require("../models/FacultyProfile")
+const ClubProfile = require("../models/ClubProfie")
 
 router.post("/StudentProfile", async (req, res)=>{
 
@@ -53,6 +54,32 @@ router.post("/facultyProfile", async (req, res)=>{
             dept,
             section,
             phone, 
+        })
+
+        await profile.save();
+
+        res.status(201).json({ message: "profile completed" });
+        console.log(profile);
+
+
+    }catch(e)
+    {
+        console.log(e);
+    }
+})
+
+router.post("/clubProfile", async (req, res)=>{
+
+    const {clubName, startingYear, clubEmai, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo} = req.body;
+
+    if(!clubName|| !startingYear|| !clubEmai, !clubType|| !mentorTitle|| !mentorName|| !dept|| !deptHod|| !leadName|| !leadRegNo|| !leadPhoneNo) {
+        res.status(422).json({ error: "Please fill all the details" });
+    }
+
+    try{
+
+        const profile = new ClubProfile({
+            clubName, startingYear, clubEmai, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo 
         })
 
         await profile.save();

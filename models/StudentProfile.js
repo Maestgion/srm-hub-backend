@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const studentProfileSchema = mongoose.Schema({
+const studentProfileSchema = new mongoose.Schema({
     firstName:
     {
         type:String,

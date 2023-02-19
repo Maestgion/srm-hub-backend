@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const facultyProfileSchema = mongoose.Schema({
+const facultyProfileSchema = new mongoose.Schema({
     title:
     {
         type:String,
@@ -27,9 +27,15 @@ const facultyProfileSchema = mongoose.Schema({
         type:String,
         required: true,
     },
+    facType:{
+        
+        type:String,
+        required: true,
+    },
     section:
     {
         type:String,
+        default: null,
         required: true,
     },
     phone:{
