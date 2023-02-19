@@ -22,6 +22,10 @@ const userSchema = mongoose.Schema(
             type:String,
             required: true
         },
+        isHod:{
+            type: Boolean,
+            default: false,
+        },
         tokens:
        [
         {
