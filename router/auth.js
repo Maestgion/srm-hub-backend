@@ -1,5 +1,6 @@
 const express = require("express")
 const router = express.Router()
+const bcrypt = require("bcryptjs")
 const User = require("../models/User")
 
 router.post("/register", async (req, res)=>{
@@ -45,6 +46,44 @@ router.post("/register", async (req, res)=>{
     }
 })
 
+router.post("/login", async (req, res)=>{
+
+    const {email, password} = req.body
+
+    if(!username || !password)
+    {
+        res.status(422).json({error:"Please fill all the details"});
+    } 
+
+    try{
+
+        const userExists = await User.findOne({email})
+
+        const passwordMatch = bcrypt.compare(password, userExists.password )
+
+        if(!passwordMatch)
+        {
+            res.status(401).json({error:"Wrong credentials!"})
+
+        }
+        else{
+            const token = await userExists.generateToken()
+            console.log(token)
+            res.cookie("jwtoken", token, {
+                expires: new Date(Date.now() + 2592000000),
+              httpOnly: true
+            })
+
+            const {password, cnfPassword, ...others} = userExists._doc
+            res.status(201).json({message: "login successful", others})
+            console.log(userExists)
+        }
+    }catch(e)
+    {
+        console.log(e)
+    }
+
+})
 
 
 
