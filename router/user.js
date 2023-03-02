@@ -98,19 +98,28 @@ router.get("/students", verifyTokenAndHod, async (req, res)=>{
 router.get("/faculty/:id", verifyTokenAndFaculty, async (req, res)=>{
     try{
         const faculty = await Faculty.findById(req.params.id)
-        if(faculty.section){
+        const students = await Student.find({section:faculty.section})
 
-            try{
-            const students = await Student.find({section:faculty.section})
-                
-            res.status(200).json(students)
+        if(faculty.section===students.section){
+            
+            const orderedStudents = await Student.aggregate([
+                {
+                    $project:{
+                        firstName: 1,
+                        lastName: 1,
+                        regNoSorted:{
+                            $substr:["$regNo", 11, -1]
+                        } ,
+                        dept:1,
+                        section:1,
+                        year:1,
+                        phone:1,
+                    }
+                }
+            ]).sort({regNoSorted:1})
 
 
-            }catch(e)
-            {
-        res.status(500).json({error:"error"})
-                
-            }
+            res.status(200).json(orderedStudents);
         }
 
     } catch(e)
