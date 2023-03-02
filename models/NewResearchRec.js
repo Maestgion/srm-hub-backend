@@ -13,6 +13,15 @@ const newResearchRecSchema = new mongoose.Schema({
     criteria:{
         type: String,
         required: true
+    },
+    LinkedInProfile:{
+        type: String,
+        required: true,
+    },
+    resumeUpload:{
+        data: Buffer,
+        type: String,
+        required: true
     }
 })
 
