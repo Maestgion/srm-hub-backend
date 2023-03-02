@@ -34,7 +34,29 @@ const studentProfileSchema = new mongoose.Schema({
     phone:{
         type:Number,
         required: true,
-    }
+    },
+    achievements:[
+        {
+            competitionName:{
+                type: String, 
+                required: true,
+            },
+            position:{
+                type: String,
+                required: true
+            },
+            proofLink:{
+                type: String,
+                required: true
+            },
+            date:{
+                type: Date,
+                required: true
+            }
+
+        }
+    ]
+   
     
 
 },{timestamps:true});
