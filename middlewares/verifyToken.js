@@ -91,3 +91,12 @@ const verifyTokenAndHod = async (req, res, next)=>{
         }
     })
 }
+
+
+module.exports = {
+    verifyToken,
+    verifyTokenAndAuthorization,
+    verifyTokenAndFaculty,
+    verifyTokenAndClub,
+    verifyTokenAndHod
+  };

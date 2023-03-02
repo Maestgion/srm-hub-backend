@@ -3,7 +3,12 @@ const router = express.Router();
 const NewProject = require("../models/NewProject")
 const NewProjectRecruitment = require("../models/NewProjectRecruitement")
 
-router.post("/newProject", async (req, res)=>{
+const {verifyTokenAndFaculty, verifyTokenAndAuthorization} = require("../middlewares/verifyToken")
+
+
+// project pitch deck 
+
+router.post("/newProject", verifyTokenAndFaculty, async (req, res)=>{
     const { projectTitle, problemStatement, solution} = req.body;
 
     if(!projectTitle|| !problemStatement|| !solution)
@@ -32,7 +37,9 @@ router.post("/newProject", async (req, res)=>{
     }
 })
 
-router.post("/projectRecruitment", async (req, res)=>{
+// project Recruitment 
+
+router.post("/projectRecruitment", verifyTokenAndAuthorization, async (req, res)=>{
     const {projectTitle, problemStatement, criteria} = req.body;
 
     if(!projectTitle|| !problemStatement|| !criteria)
@@ -49,7 +56,7 @@ router.post("/projectRecruitment", async (req, res)=>{
         await newProjectRec.save();
 
 
-        res.status(200).json("project added");
+        res.status(200).json("project recruitment posted");
         console.log(newProjectRec);
 
     }catch(e)
