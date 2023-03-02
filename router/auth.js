@@ -50,7 +50,7 @@ router.post("/login", async (req, res)=>{
 
     const {email, password} = req.body
 
-    if(!username || !password)
+    if(!email || !password)
     {
         res.status(422).json({error:"Please fill all the details"});
     } 

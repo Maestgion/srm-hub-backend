@@ -18,6 +18,6 @@ const newProjectRecSchema = new mongoose.Schema({
     },
 })
 
-const NewProjectRecruitment = mongoose.model("newProjectRecruitment", newProjectSchema)
+const NewProjectRecruitment = mongoose.model("newProjectRecruitment", newProjectRecSchema)
 
 module.exports = NewProjectRecruitment

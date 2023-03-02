@@ -70,16 +70,16 @@ router.post("/facultyProfile", async (req, res)=>{
 
 router.post("/clubProfile", async (req, res)=>{
 
-    const {clubName, startingYear, clubEmai, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo} = req.body;
+    const {clubName, startingYear, clubEmail, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo} = req.body;
 
-    if(!clubName|| !startingYear|| !clubEmai, !clubType|| !mentorTitle|| !mentorName|| !dept|| !deptHod|| !leadName|| !leadRegNo|| !leadPhoneNo) {
+    if(!clubName|| !startingYear|| !clubEmail, !clubType|| !mentorTitle|| !mentorName|| !dept|| !deptHod|| !leadName|| !leadRegNo|| !leadPhoneNo) {
         res.status(422).json({ error: "Please fill all the details" });
     }
 
     try{
 
         const profile = new ClubProfile({
-            clubName, startingYear, clubEmai, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo 
+            clubName, startingYear, clubEmail, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo 
         })
 
         await profile.save();
