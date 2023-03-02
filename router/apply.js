@@ -1,6 +1,9 @@
-const express = require("express")
+const express = require("express");
+const { verifyTokenAndFaculty } = require("../middlewares/verifyToken");
 const router = express.Router()
 const Applications = require("../models/Applications")
+
+const {verifyTokenAndFaculty} = require("../middlewares/verifyToken")
 
 
 // student application
@@ -29,6 +32,19 @@ router.post("/apply", async (req, res)=>{
     }
 
 } )
+
+// get application
+
+router.get("/application/details", verifyTokenAndFaculty, async (req, res)=>{
+    try{
+        const applicationDetails = await Applications.find();
+
+    res.status(200).json(applicationDetails)
+    }catch(e)
+    {
+        res.status(500).json(e);
+    }
+}  )
 
 
 

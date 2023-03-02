@@ -81,9 +81,14 @@ router.post("/projectRecruitment", verifyTokenAndAuthorization, async (req, res)
 
 
 router.get("/projectRecDetails", async (req, res)=>{
-    projectRecDetails = await NewProjectRec.find();
+    try{
+        projectRecDetails = await NewProjectRec.find();
 
     res.status(200).json(projectRecDetails)
+    }catch(e)
+    {
+        res.status(500).json(e)
+    }
 })
 
 module.exports = router;

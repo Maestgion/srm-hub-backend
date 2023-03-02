@@ -37,10 +37,15 @@ router.post("/researchRec", verifyTokenAndFaculty, async(req, res)=>{
 
 router.get("/researchRecDetails", async (req, res)=>{
 
-    researchDetails = await NewResearchRec.find();
+    try{
+        researchDetails = await NewResearchRec.find();
 
     res.status(200).json(researchRecDetails)
+    }catch(e)
+    {
+        res.status(500).json(e)
 
+    }
 })
 
 
