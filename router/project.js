@@ -91,4 +91,57 @@ router.get("/projectRecDetails", async (req, res)=>{
     }
 })
 
+
+// post project update
+
+router.post("/projectApproval/:id", verifyTokenAndHod, async (req, res)=>{
+    
+    const {status, comments} = req.body;
+
+    if(!status || !comments) 
+    {
+        res.status(422).json({error:"Please fill all the details"});
+        
+    }
+
+    try{
+        const projectStatus = await NewProject.findByIdAndUpdate(req.params.id, {
+            $set:{
+                update:[
+                    {
+                        status,
+                        comments,
+                    }
+                ]
+            }
+        })
+
+        res.status(200).json(projectStatus)
+    }catch(e)
+    {
+        res.status(500).json(e)
+    }
+})
+
+// get project status
+
+router.get("/projectStatus/:id", verifyTokenAndFaculty, async (req, res)=>{
+    
+
+
+    try{
+        const project = await NewProject.findById(req.params.id)
+
+        const projectUpdate = project.update 
+
+        res.status(200).json(projectUpdate)
+    }catch(e)
+    {
+        res.status(500).json(e)
+    }
+})
+
+
+
+
 module.exports = router;
