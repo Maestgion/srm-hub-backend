@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const NewProject = require("../models/NewProject")
-const NewProjectRecruitment = require("../models/NewProjectRecruitement")
+const NewProjectRec = require("../models/NewProjectRecruitement")
 
 const {verifyTokenAndFaculty, verifyTokenAndAuthorization} = require("../middlewares/verifyToken")
 
 
-// project pitch deck 
+// post project pitch-deck (faculty) 
 
 router.post("/newProject", verifyTokenAndFaculty, async (req, res)=>{
     const { projectTitle, problemStatement, solution} = req.body;
@@ -37,6 +37,17 @@ router.post("/newProject", verifyTokenAndFaculty, async (req, res)=>{
     }
 })
 
+
+// get project pitch-deck (hod) 
+
+router.get("newProjectPitch", verifyTokenAndFaculty, async (req, res)=>{
+    projectDetails = await NewProject.find();
+
+    res.status(200).json(projectDetails)
+})
+
+
+
 // project Recruitment 
 
 router.post("/projectRecruitment", verifyTokenAndAuthorization, async (req, res)=>{
@@ -49,7 +60,7 @@ router.post("/projectRecruitment", verifyTokenAndAuthorization, async (req, res)
 
     try{
 
-        const newProjectRec = new NewProjectRecruitment({
+        const newProjectRec = new NewProjectRec({
             projectTitle, problemStatement, criteria : criteria
     })
 
@@ -65,5 +76,14 @@ router.post("/projectRecruitment", verifyTokenAndAuthorization, async (req, res)
     }
 })
 
+
+//  get project recruitment details (student)
+
+
+router.get("/projectRecDetails", async (req, res)=>{
+    projectRecDetails = await NewProjectRec.find();
+
+    res.status(200).json(projectRecDetails)
+})
 
 module.exports = router;

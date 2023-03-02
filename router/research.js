@@ -33,6 +33,15 @@ router.post("/researchRec", verifyTokenAndFaculty, async(req, res)=>{
 
 })
 
+//  get research details  (student)
+
+router.get("/researchRecDetails", async (req, res)=>{
+
+    researchDetails = await NewResearchRec.find();
+
+    res.status(200).json(researchRecDetails)
+
+})
 
 
 module.exports = router;
