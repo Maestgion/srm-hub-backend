@@ -6,7 +6,7 @@ const {verifyTokenAndFaculty} = require("../middlewares/verifyToken")
 
 // research recruitment dierectly
 
-router.post("/researchRec", verifyTokenAndFaculty, async(req, res)=>{
+router.post("/newResearch/recruitment", verifyTokenAndFaculty, async(req, res)=>{
 
     const {researchTopic, description, criteria } = req.body;
 
@@ -35,7 +35,7 @@ router.post("/researchRec", verifyTokenAndFaculty, async(req, res)=>{
 
 //  get research details  (student)
 
-router.get("/researchRecDetails", async (req, res)=>{
+router.get("/newResearch/recruimentDetails", async (req, res)=>{
 
     try{
         researchDetails = await NewResearchRec.find();

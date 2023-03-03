@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 
-const clubProfileSchema = new mongoose.Schema({
+const clubSchema = new mongoose.Schema({
     clubName:
     {
         type:String,
@@ -61,7 +61,7 @@ const clubProfileSchema = new mongoose.Schema({
 })
 
 
-const ClubProfile = mongoose.model("clubProfile", clubProfileSchema)
+const Club = mongoose.model("club", clubSchema)
 
-module.exports = ClubProfile;
+module.exports = Club;
 

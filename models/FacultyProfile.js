@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const facultyProfileSchema = new mongoose.Schema({
+const facultySchema = new mongoose.Schema({
     title:
     {
         type:String,
@@ -46,6 +46,6 @@ const facultyProfileSchema = new mongoose.Schema({
 
 },{timestamps:true});
 
-const FacultyProfile = mongoose.model("studentProfile", facultyProfileSchema);
+const Faculty = mongoose.model("faculty", facultySchema);
 
-module.exports=FacultyProfile
+module.exports=Faculty

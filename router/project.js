@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const NewProject = require("../models/NewProject")
 const NewProjectRec = require("../models/NewProjectRecruitement")
-
-const {verifyTokenAndFaculty, verifyTokenAndAuthorization} = require("../middlewares/verifyToken")
+const Applications = require("../models/Applications")
+const {verifyTokenAndFaculty, verifyTokenAndAuthorization, verifyTokenAndHod} = require("../middlewares/verifyToken")
 
 
 // post project pitch-deck (faculty) 
@@ -40,7 +40,7 @@ router.post("/newProject", verifyTokenAndFaculty, async (req, res)=>{
 
 // get project pitch-deck (hod) 
 
-router.get("newProjectPitch", verifyTokenAndFaculty, async (req, res)=>{
+router.get("/newProject/pitch", verifyTokenAndFaculty, async (req, res)=>{
     projectDetails = await NewProject.find();
 
     res.status(200).json(projectDetails)
@@ -50,7 +50,7 @@ router.get("newProjectPitch", verifyTokenAndFaculty, async (req, res)=>{
 
 // project Recruitment 
 
-router.post("/projectRecruitment", verifyTokenAndAuthorization, async (req, res)=>{
+router.post("/newProject/recruitment", verifyTokenAndAuthorization, async (req, res)=>{
     const {projectTitle, problemStatement, criteria} = req.body;
 
     if(!projectTitle|| !problemStatement|| !criteria)
@@ -80,7 +80,7 @@ router.post("/projectRecruitment", verifyTokenAndAuthorization, async (req, res)
 //  get project recruitment details (student)
 
 
-router.get("/projectRecDetails", async (req, res)=>{
+router.get("/newProject/recDetails", async (req, res)=>{
     try{
         projectRecDetails = await NewProjectRec.find();
 
@@ -94,7 +94,7 @@ router.get("/projectRecDetails", async (req, res)=>{
 
 // post project update
 
-router.post("/projectApproval/:id", verifyTokenAndHod, async (req, res)=>{
+router.post("/newProject/approval/:id", verifyTokenAndHod, async (req, res)=>{
     
     const {status, comments} = req.body;
 
@@ -125,7 +125,7 @@ router.post("/projectApproval/:id", verifyTokenAndHod, async (req, res)=>{
 
 // get project status
 
-router.get("/projectStatus/:id", verifyTokenAndFaculty, async (req, res)=>{
+router.get("/newProject/status/:id", verifyTokenAndFaculty, async (req, res)=>{
     
 
 
