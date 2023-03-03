@@ -16,7 +16,7 @@ app.use("/api/users", userRoute)
 app.use("/api/projects", projectRoute)
 app.use("/api/research", researchRoute)
 app.use("/api/application", applyRoute)
-app.use("/api/report", reportRoute)
+app.use("/api/achievements", reportRoute)
 
 
 app.listen(PORT, () => {
