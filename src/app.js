@@ -6,7 +6,8 @@ const authRoute = require("../router/auth");
 const userRoute = require("../router/user")
 const projectRoute = require("../router/project")
 const researchRoute = require("../router/research")
-const reportRoute = require("../router/apply")
+const applyRoute = require("../router/apply")
+const reportRoute = require("../router/studentReport")
 
 app.use(express.json());
 
@@ -14,7 +15,9 @@ app.use("/api/users", authRoute);
 app.use("/api/users", userRoute)
 app.use("/api/projects", projectRoute)
 app.use("/api/research", researchRoute)
-app.use("/api/student", )
+app.use("/api/application", applyRoute)
+app.use("/api/report", reportRoute)
+
 
 app.listen(PORT, () => {
   console.log("server up");

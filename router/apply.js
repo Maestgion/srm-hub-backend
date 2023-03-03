@@ -34,7 +34,7 @@ router.post("/apply", async (req, res)=>{
 
 // get application
 
-router.get("/application/details", verifyTokenAndFaculty, async (req, res)=>{
+router.get("/details", verifyTokenAndFaculty, async (req, res)=>{
     try{
         const applicationDetails = await Applications.find();
 
