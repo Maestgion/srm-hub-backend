@@ -16,18 +16,17 @@ const newProjectSchema = new mongoose.Schema({
         type:String,
         required: true,
     },
-    update:[
-        {
-            status:{
-                type: Boolean,
-                required: true,
-            },
-            comments:{
+    status:
+    {
                 type: String,
                 required: true,
-            }
-        }
-    ]
+    },
+     comments:
+     {
+                type: String,
+                required: true,
+    }
+
 
 })
 

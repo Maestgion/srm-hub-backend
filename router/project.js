@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const NewProject = require("../models/NewProject")
 const NewProjectRec = require("../models/NewProjectRecruitement")
-const Applications = require("../models/Applications")
 const {verifyTokenAndFaculty, verifyTokenAndAuthorization, verifyTokenAndHod} = require("../middlewares/verifyToken")
 
 
@@ -40,7 +39,7 @@ router.post("/newProject", verifyTokenAndFaculty, async (req, res)=>{
 
 // get project pitch-deck (hod) 
 
-router.get("/newProject/pitch", verifyTokenAndFaculty, async (req, res)=>{
+router.get("/newProject", verifyTokenAndFaculty, async (req, res)=>{
     projectDetails = await NewProject.find();
 
     res.status(200).json(projectDetails)
@@ -80,7 +79,7 @@ router.post("/newProject/recruitment", verifyTokenAndAuthorization, async (req, 
 //  get project recruitment details (student)
 
 
-router.get("/newProject/recDetails", async (req, res)=>{
+router.get("/newProject/recruitment/Details", async (req, res)=>{
     try{
         projectRecDetails = await NewProjectRec.find();
 
@@ -107,12 +106,10 @@ router.post("/newProject/approval/:id", verifyTokenAndHod, async (req, res)=>{
     try{
         const projectStatus = await NewProject.findByIdAndUpdate(req.params.id, {
             $set:{
-                update:[
-                    {
+                
                         status,
                         comments,
-                    }
-                ]
+                 
             }
         })
 
@@ -123,25 +120,64 @@ router.post("/newProject/approval/:id", verifyTokenAndHod, async (req, res)=>{
     }
 })
 
-// get project status
+// get project update
 
-router.get("/newProject/status/:id", verifyTokenAndFaculty, async (req, res)=>{
+router.get("/newProject/approval/:id", verifyTokenAndFaculty, async (req, res)=>{
     
-
-
     try{
         const project = await NewProject.findById(req.params.id)
 
-        const projectUpdate = project.update 
+        const {status, comments} = project 
 
-        res.status(200).json(projectUpdate)
+        res.status(200).json({
+            status,
+            comments
+        })
     }catch(e)
     {
         res.status(500).json(e)
     }
 })
 
+// get ongoing and finished
 
+router.get("/", verifyTokenAndFaculty, async (req, res)=>{
+    const queryOngoing = req.query.ongoing
+    const queryPrevious = req.query.previous
+
+    
+
+    try{
+        let project
+
+        if(queryOngoing)
+        {
+
+            project = await NewProject.find({status:"accepted"})
+
+            if(project==="accepted")
+            {
+                res.status(200).json(project);
+            }
+
+        }
+        else if(queryPrevious)
+        {   
+
+            project = await NewProject.find({status:"completed"})
+
+
+            if(project==="completed")
+            {
+                res.status(200).json(project);
+
+            }
+        }
+    }catch(e)
+    {
+        res.status(500).json(e)
+    }
+})
 
 
 module.exports = router;
