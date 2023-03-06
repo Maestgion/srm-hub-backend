@@ -13,7 +13,7 @@ const studentSchema = new mongoose.Schema({
     },
     regNo:
     {
-        type:Number,
+        type:String,
         required: true,
         unique: true
     },

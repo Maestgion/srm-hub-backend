@@ -49,7 +49,7 @@ const clubSchema = new mongoose.Schema({
         required: true,
     },
     leadRegNo:{
-        type:Number,
+        type:String,
         required: true,
     },
     leadPhoneNo:{
