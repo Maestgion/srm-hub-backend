@@ -5,26 +5,31 @@ const newProjectSchema = new mongoose.Schema({
     {
         type:String,
         required: true,
+        unique: true
     },
     problemStatement:
     {
         type:String,
         required: true,
+        unique: true
+
     },
     solution:
     {
         type:String,
         required: true,
+        unique: true
+
     },
     status:
     {
-                type: String,
-                required: true,
+                type: String
+              
     },
      comments:
      {
-                type: String,
-                required: true,
+                type: String
+               
     }
 
 

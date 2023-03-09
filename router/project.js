@@ -8,7 +8,7 @@ const NewProjectRecruitment = require("../models/NewProjectRecruitement");
 
 // post project pitch-deck (faculty) 
 
-router.post("/newProject", verifyTokenAndFaculty, async (req, res)=>{
+router.post("/newProject", async (req, res)=>{
     const { projectTitle, problemStatement, solution} = req.body;
 
     if(!projectTitle|| !problemStatement|| !solution)
@@ -23,17 +23,18 @@ router.post("/newProject", verifyTokenAndFaculty, async (req, res)=>{
             projectTitle, problemStatement, solution
     })
 
-        await newProject.save();
+        const savedProject =    await newProject.save();
 
 
         res.status(200).json("project added");
-        console.log(newProject);
+        console.log(savedProject);
 
 
     }catch(e)
     {
         
         res.status(500).json(e)
+        console.log(e)
     }
 })
 
