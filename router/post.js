@@ -7,8 +7,9 @@ const Post = require("../models/Post")
 const Student = require("../models/StudentProfile")
 
 // post 
+// id in params is userID
 
-router.post("/create", verifyTokenAndAuthorization, async (req, res)=>{
+router.post("/create/:id", verifyTokenAndAuthorization, async (req, res)=>{
     const {img, desc, registerLink} = req.body
 
     if (!img||!desc||!registerLink)
@@ -19,7 +20,7 @@ router.post("/create", verifyTokenAndAuthorization, async (req, res)=>{
 
     try{
 
-        const userId = req.rootUser.id
+        const userId = req.params.id
 
         const newPost = new Post({
             userId,
@@ -41,7 +42,7 @@ router.post("/create", verifyTokenAndAuthorization, async (req, res)=>{
 } )
 
 
-// update post 
+// update post with post id 
 
 router.put("/edit/:id", verifyTokenAndAuthorization, async(req, res)=>{
 try{
@@ -60,7 +61,7 @@ try{
 
 })
 
-// delete post 
+// delete post with post id
 
 
 router.delete("/delete/:id", verifyTokenAndAuthorization, async(req, res)=>{
@@ -82,18 +83,17 @@ router.delete("/delete/:id", verifyTokenAndAuthorization, async(req, res)=>{
     
     })
 
-// get posts
+// get all posts of a user
 
-router.get("/:id", verifyTokenAndAuthorization, async (req, res)=>{
+router.get("/all/:id", verifyTokenAndAuthorization, async (req, res)=>{
 
         try{   
 
-            const posts = await Post.findbyId(req.params.id)
+            const posts = await Post.findbyId({userId:req.params.id})
 
-            if(req.params.id===posts.userId)
-            {
+           
                 res.status(200).json(posts)
-            }
+            
             
         }catch(e)
         {
@@ -103,20 +103,42 @@ router.get("/:id", verifyTokenAndAuthorization, async (req, res)=>{
 
     } )
 
+// get specific post with post id
+
+router.get("/single/:id", verifyTokenAndAuthorization, async (req, res)=>{
+       try{   
+
+            const posts = await Post.findbyId(req.params.id)
+
+           
+                res.status(200).json(posts)
+            
+            
+        }catch(e)
+        {
+            
+            res.status(500).json(e)
+        }
+
+    }
+)
+
 
 // saved Post 
 
-router.put("/saved", verifyTokenAndAuthorization, async (req, res)=>{
+router.put("/save/:id", verifyTokenAndAuthorization, async (req, res)=>{
+
+    const userType = req.cookies.userType
     
     try{    
 
         const user = await Post.findById(req.rootUser.id)
 
-        const post = await Post.findbyId({userId:req.rootUser.id})
+        const post = await Post.findbyId(req.params.id)
 
 
 
-        if(user.userType==="student")
+        if(userType==="student")
         {
             const savedPost = await Student.findByIdAndUpdate(user.id, {
                 $push:{
