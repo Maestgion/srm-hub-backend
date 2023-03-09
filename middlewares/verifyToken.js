@@ -6,7 +6,79 @@ const Faculty = require("../models/FacultyProfile")
 
 const verifyToken = async (req, res, next)=>{
 
-    try{
+
+    const userType = req.cookies.userType
+
+    if(userType==="student")
+    {
+        try{
+
+            const token = req.cookies.jwtoken
+    
+            const verification = jwt.verify(token, process.env.SECRET_KEY)
+    
+            const rootUser = await Faculty.findOne({_id:verification._id, "tokens.token" : token})
+    
+            if(!rootUser)
+            {
+                throw new Error("User Not found")
+            }
+    
+            req.rootUser = rootUser;
+    
+        }catch(e)
+        {
+            res.status(403).json("Unauthorized access!!")
+        }
+    next()
+
+    }
+    else if(userType==="faculty")
+    {
+        try{
+
+            const token = req.cookies.jwtoken
+    
+            const verification = jwt.verify(token, process.env.SECRET_KEY)
+    
+            const rootUser = await Faculty.findOne({_id:verification._id, "tokens.token" : token})
+    
+            if(!rootUser)
+            {
+                throw new Error("User Not found")
+            }
+    
+            req.rootUser = rootUser;
+    
+        }catch(e)
+        {
+            res.status(403).json("Unauthorized access!!")
+        }
+        next()
+
+    }
+    else if(userType==="club")
+    {
+        try{
+
+            const token = req.cookies.jwtoken
+    
+            const verification = jwt.verify(token, process.env.SECRET_KEY)
+    
+            const rootUser = await Faculty.findOne({_id:verification._id, "tokens.token" : token})
+    
+            if(!rootUser)
+            {
+                throw new Error("User Not found")
+            }
+    
+            req.rootUser = rootUser;
+    
+        }catch(e)
+        {
+            res.status(403).json("Unauthorized access!!")
+        }
+           try{
 
         const token = req.cookies.jwtoken
 
@@ -25,9 +97,14 @@ const verifyToken = async (req, res, next)=>{
     {
         res.status(403).json("Unauthorized access!!")
     }
-
-
     next()
+
+    }
+
+
+ 
+
+
 
 }
 

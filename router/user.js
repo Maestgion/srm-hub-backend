@@ -123,16 +123,21 @@ router.put("/update/:id", verifyTokenAndAuthorization, async (req, res) => {
     }
 
     try {
-        const updatedAccount = await User.findByIdAndUpdate(req.params.id,
-            {
-                $set: req.body
-            }, { new: true })
+        // const updatedAccount = await User.findByIdAndUpdate(req.params.id,
+        //     {
+        //         $set: req.body
+        //     }, { new: true })
 
-        res.status(200).json(updatedAccount)
+        const student = await Student.findById(req.params.id)
+        const faculty = await Faculty.findById(req.params.id)
+        const club = await Club.findById(req.params.id)
+            
 
-        const user = await User.findById(req.params.id)
+        // res.status(200).json(updatedAccount)
 
-        if (user.userType === "student") {
+        // const user = await User.findById(req.params.id)
+
+        if (student.userType === "student") {
             try {
                 const updatedAccount = await Student.findByIdAndUpdate(req.params.id, {
                     $set: req.body
@@ -144,7 +149,7 @@ router.put("/update/:id", verifyTokenAndAuthorization, async (req, res) => {
                 res.status(500).json({ error: "error" })
             }
         }
-        else if (user.userType === "faculty") {
+        else if (faculty.userType === "faculty") {
             try {
                 const updatedAccount = await Faculty.findByIdAndUpdate(req.params.id, {
                     $set: req.body
@@ -156,7 +161,7 @@ router.put("/update/:id", verifyTokenAndAuthorization, async (req, res) => {
                 res.status(500).json({ error: "error" })
             }
         }
-        else if (user.userType === "club") {
+        else if (club.userType === "club") {
             try {
                 const updatedAccount = await Club.findByIdAndUpdate(req.params.id, {
                     $set: req.body
@@ -179,9 +184,9 @@ router.put("/update/:id", verifyTokenAndAuthorization, async (req, res) => {
 
 // get all students
 
-router.get("/students", verifyTokenAndHod, async (req, res) => {
+router.get("/students", verifyTokenAndAuthorization, async (req, res) => {
     try {
-        const students = await Student.find({ isHod: false })
+        const students = await Student.find()
 
         res.status(200).json(students);
     }
@@ -229,7 +234,7 @@ router.get("/faculty/:id", verifyTokenAndFaculty, async (req, res) => {
 
 // get single faculty
 
-router.get("/faculty/single/:id", async (req, res) => {
+router.get("/single/faculty/:id", async (req, res) => {
 
     try {
 
@@ -244,7 +249,7 @@ router.get("/faculty/single/:id", async (req, res) => {
 
 // get single student
 
-router.get("/student/single/:id", async (req, res) => {
+router.get("/single/student/:id", async (req, res) => {
 
     try {
 
@@ -259,7 +264,7 @@ router.get("/student/single/:id", async (req, res) => {
 
 // get single club
 
-router.get("/club/single/:id", async (req, res) => {
+router.get("/single/club/:id", async (req, res) => {
 
     try {
 
@@ -279,7 +284,7 @@ router.get("/club/single/:id", async (req, res) => {
 
 router.get("/faculties", verifyTokenAndHod, async (req, res) => {
     try {
-        const students = await Faculty.find({ isHod: false })
+        const students = await Faculty.find()
 
         res.status(200).json(students);
     }
@@ -294,7 +299,7 @@ router.get("/faculties", verifyTokenAndHod, async (req, res) => {
 
 router.get("/clubs", verifyTokenAndHod, async (req, res) => {
     try {
-        const students = await Faculty.find({ isHod: false })
+        const students = await Faculty.find()
 
         res.status(200).json(students);
     }
