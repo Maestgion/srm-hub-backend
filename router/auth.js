@@ -122,7 +122,7 @@ router.post("/login", async (req, res) => {
             else {
                 const token = await userExists.generateToken()
                 console.log(token)
-                res.cookie("jwtoken", token, {
+                res.cookie("jwtokenstudent", token, {
                     expires: new Date(Date.now() + 2592000000),
                     httpOnly: true
                 })
@@ -149,7 +149,7 @@ router.post("/login", async (req, res) => {
             else {
                 const token = await userExists.generateToken()
                 console.log(token)
-                res.cookie("jwtoken", token, {
+                res.cookie("jwtokenfaculty", token, {
                     expires: new Date(Date.now() + 2592000000),
                     httpOnly: true
                 })
@@ -176,7 +176,7 @@ router.post("/login", async (req, res) => {
             else {
                 const token = await userExists.generateToken()
                 console.log(token)
-                res.cookie("jwtoken", token, {
+                res.cookie("jwtokenclub", token, {
                     expires: new Date(Date.now() + 2592000000),
                     httpOnly: true
                 })

@@ -13,7 +13,7 @@ const verifyToken = async (req, res, next)=>{
     {
         try{
 
-            const token = req.cookies.jwtoken
+            const token = req.cookies.jwtokenstudent
     
             const verification = jwt.verify(token, process.env.SECRET_KEY)
     
@@ -37,7 +37,7 @@ const verifyToken = async (req, res, next)=>{
     {
         try{
 
-            const token = req.cookies.jwtoken
+            const token = req.cookies.jwtokenfaculty
     
             const verification = jwt.verify(token, process.env.SECRET_KEY)
     
@@ -61,7 +61,7 @@ const verifyToken = async (req, res, next)=>{
     {
         try{
 
-            const token = req.cookies.jwtoken
+            const token = req.cookies.jwtokenclub
     
             const verification = jwt.verify(token, process.env.SECRET_KEY)
     
@@ -78,25 +78,7 @@ const verifyToken = async (req, res, next)=>{
         {
             res.status(403).json("Unauthorized access!!")
         }
-           try{
-
-        const token = req.cookies.jwtoken
-
-        const verification = jwt.verify(token, process.env.SECRET_KEY)
-
-        const rootUser = await Faculty.findOne({_id:verification._id, "tokens.token" : token})
-
-        if(!rootUser)
-        {
-            throw new Error("User Not found")
-        }
-
-        req.rootUser = rootUser;
-
-    }catch(e)
-    {
-        res.status(403).json("Unauthorized access!!")
-    }
+          
     next()
 
     }
