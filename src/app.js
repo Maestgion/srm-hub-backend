@@ -8,6 +8,7 @@ const projectRoute = require("../router/project")
 const researchRoute = require("../router/research")
 const applyRoute = require("../router/apply")
 const reportRoute = require("../router/studentReport")
+const postRoute = require("../router/post")
 const cors = require("cors")
 const helmet = require("helmet")
 
@@ -22,6 +23,7 @@ app.use("/api/projects", projectRoute)
 app.use("/api/research", researchRoute)
 app.use("/api/application", applyRoute)
 app.use("/api/achievements", reportRoute)
+app.use("/api/posts", postRoute )
 
 
 app.listen(PORT, () => {
