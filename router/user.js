@@ -19,7 +19,7 @@ router.put("/profile/student/:id", async (req, res) => {
 
     try {
 
-        const profile = Student.findByIdAndUpdate(req.params.id, {
+        const profile = await Student.findByIdAndUpdate(req.params.id, {
             $set: {
                 firstName,
                 lastName,
@@ -59,7 +59,7 @@ router.put("/profile/faculty/:id", async (req, res) => {
     try {
 
         console.log(fac.email)
-        const profile = Faculty.findByIdAndUpdate(req.params.id, {
+        const profile = await Faculty.findByIdAndUpdate(req.params.id, {
             $set: {
 
                 title,
@@ -99,7 +99,7 @@ router.put("/profile/club/:id", async (req, res) => {
 
     try {
 
-        const profile = Club.findByIdAndUpdate(req.params.id, {
+        const profile = await Club.findByIdAndUpdate(req.params.id, {
             $set: {
                 clubName, startingYear, clubEmail, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo, isComplete: true
 
@@ -109,6 +109,7 @@ router.put("/profile/club/:id", async (req, res) => {
        
 
         res.status(201).json({ message: "profile completed" });
+        // res.status(201).json(profile);
         console.log(profile);
 
 
