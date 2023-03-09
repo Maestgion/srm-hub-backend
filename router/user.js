@@ -27,13 +27,12 @@ router.put("/profile/student/:id", async (req, res) => {
                 section,
                 year,
                 phone,
-                email,
                 isComplete: true
             }
         }, { new: true })
 
 
-        res.status(201).json({ message: "profile completed" });
+        res.status(201).json({ message: "profile completed", profile });
         console.log(profile);
 
 
@@ -57,7 +56,6 @@ router.put("/profile/faculty/:id", async (req, res) => {
 
     try {
 
-        console.log(fac.email)
         const profile = await Faculty.findByIdAndUpdate(req.params.id, {
             $set: {
 
@@ -69,7 +67,6 @@ router.put("/profile/faculty/:id", async (req, res) => {
                 section,
                 phone,
                 facType,
-                email,
                 isComplete: true
 
             }
