@@ -9,7 +9,7 @@ const clubSchema = new mongoose.Schema({
     },
     startingYear:
     {
-        type: Number,
+        type: Date,
         required: true,
     },
     clubEmail:
