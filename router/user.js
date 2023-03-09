@@ -9,7 +9,7 @@ const Club = require("../models/ClubProfie");
 
 // post student profile
 
-router.post("/student/profile/:id", async (req, res) => {
+router.put("/profile/student/:id", async (req, res) => {
 
     const { firstName, lastName, regNo, dept, section, year, phone } = req.body;
 
@@ -18,17 +18,20 @@ router.post("/student/profile/:id", async (req, res) => {
     }
 
     try {
-        const std = await User.findById(req.params.id)
-        const profile = new Student({
-            firstName,
-            lastName,
-            regNo,
-            dept,
-            section,
-            year,
-            phone,
-            email: std.email
-        })
+
+        const profile = new Student(req.params.id, {
+            $set: {
+                firstName,
+                lastName,
+                regNo,
+                dept,
+                section,
+                year,
+                phone,
+                email,
+                isComplete: true
+            }
+        }, { new: true })
 
         await profile.save();
 
@@ -46,7 +49,7 @@ router.post("/student/profile/:id", async (req, res) => {
 
 
 
-router.post("/faculty/profile/:id", async (req, res) => {
+router.post("/profile/faculty/:id", async (req, res) => {
 
     const { title, firstName, lastName, regNo, dept, section, phone, facType } = req.body;
 
@@ -55,19 +58,24 @@ router.post("/faculty/profile/:id", async (req, res) => {
     }
 
     try {
-        const fac = await User.findById(req.params.id)
+
         console.log(fac.email)
-        const profile = new Faculty({
-            title,
-            firstName,
-            lastName,
-            regNo,
-            dept,
-            section,
-            phone,
-            facType,
-            email: fac.email
-        })
+        const profile = new Faculty(req.params.id, {
+            $set: {
+
+                title,
+                firstName,
+                lastName,
+                regNo,
+                dept,
+                section,
+                phone,
+                facType,
+                email,
+                isComplete: true
+
+            }
+        }, { new: true })
 
         await profile.save();
 
@@ -80,11 +88,10 @@ router.post("/faculty/profile/:id", async (req, res) => {
     }
 })
 
-
 // club profile
 
 
-router.post("/club/profile", async (req, res) => {
+router.put("/profile/club/:id", async (req, res) => {
 
     const { clubName, startingYear, clubEmail, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo } = req.body;
 
@@ -94,9 +101,12 @@ router.post("/club/profile", async (req, res) => {
 
     try {
 
-        const profile = new Club({
-            clubName, startingYear, clubEmail, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo
-        })
+        const profile = new Club(req.params.id, {
+            $set: {
+                clubName, startingYear, clubEmail, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo, isComplete: true
+
+            }
+        }, { new: true })
 
         await profile.save();
 
@@ -222,7 +232,50 @@ router.get("/faculty/:id", verifyTokenAndFaculty, async (req, res) => {
     }
 })
 
+// get single faculty
 
+router.get("/faculty/single/:id", async (req, res) => {
+
+    try {
+
+        const faculty = await Faculty.findById(req.params.id)
+
+        res.status(200).json(faculty)
+
+    } catch (e) {
+        res.status(500).json({ error: "error" })
+    }
+})
+
+// get single student
+
+router.get("/student/single/:id", async (req, res) => {
+
+    try {
+
+        const student = await Student.findById(req.params.id)
+
+        res.status(200).json(student)
+
+    } catch (e) {
+        res.status(500).json({ error: "error" })
+    }
+})
+
+// get single club
+
+router.get("/club/single/:id", async (req, res) => {
+
+    try {
+
+        const club = await Club.findById(req.params.id)
+
+        res.status(200).json(club)
+
+    } catch (e) {
+        res.status(500).json({ error: "error" })
+    }
+})
 
 
 
