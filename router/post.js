@@ -5,7 +5,6 @@ const Faculty = require("../models/FacultyProfile")
 const router = express.Router()
 const Post = require("../models/Post")
 const Student = require("../models/StudentProfile")
-const User = require("../models/User")
 
 // post 
 

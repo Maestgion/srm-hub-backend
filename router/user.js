@@ -2,7 +2,6 @@ const express = require("express");
 const { verifyTokenAndAuthorization, verifyTokenAndHod, verifyTokenAndFaculty } = require("../middlewares/verifyToken");
 const router = express.Router()
 const bcrypt = require("bcryptjs");
-const User = require("../models/User")
 const Student = require("../models/StudentProfile")
 const Faculty = require("../models/FacultyProfile")
 const Club = require("../models/ClubProfie");
