@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken")
-const User = require("../models/User")
+const Faculty = require("../models/FacultyProfile")
 
 
 // initial token verification
@@ -12,7 +12,7 @@ const verifyToken = async (req, res, next)=>{
 
         const verification = jwt.verify(token, process.env.SECRET_KEY)
 
-        const rootUser = await User.findOne({_id:verification._id, "tokens.token" : token})
+        const rootUser = await Faculty.findOne({_id:verification._id, "tokens.token" : token})
 
         if(!rootUser)
         {
