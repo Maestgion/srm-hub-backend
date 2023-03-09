@@ -134,41 +134,40 @@ router.get("/newProject/approval/:id", verifyTokenAndFaculty, async (req, res) =
 
 // get ongoing and finished
 
-router.get("/specific", async (req, res) => {
+router.get("/specific", async (req, res)=>{
     const queryOngoing = req.query.ongoing
     const queryPrevious = req.query.previous
 
 
+    console.log(queryOngoing)
 
-    try {
+    
+
+    try{
         let project
 
-        if (queryOngoing) {
+        if(queryOngoing)
+        {
+            project = await NewProject.find({status:"accepted"})
 
-            project = await NewProject.find({ status: "accepted" })
+            res.status(200).json(project);
 
-            if (project.status === "accepted") {
-                console.log(project)
-                res.status(200).json(project);
-            }
 
         }
-        else if (queryPrevious) {
+        else if(queryPrevious)
+        {   
 
-            project = await NewProject.find({ status: "completed" })
+            project = await NewProject.find({status:"completed"})
 
+            res.status(200).json(project);
 
-            if (project.status === "completed") {
-                console.log(project)
-
-                res.status(200).json(project);
-
-            }
         }
-    } catch (e) {
+    }catch(e)
+    {
         res.status(500).json(e)
     }
 })
+
 
 
 
