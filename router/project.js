@@ -2,37 +2,34 @@ const express = require("express");
 const router = express.Router();
 const NewProject = require("../models/NewProject")
 const NewProjectRec = require("../models/NewProjectRecruitement")
-const {verifyTokenAndFaculty, verifyTokenAndAuthorization, verifyTokenAndHod} = require("../middlewares/verifyToken");
+const { verifyTokenAndFaculty, verifyTokenAndAuthorization, verifyTokenAndHod } = require("../middlewares/verifyToken");
 const NewProjectRecruitment = require("../models/NewProjectRecruitement");
 
 
 // post project pitch-deck (faculty) 
 
-router.post("/newProject", async (req, res)=>{
-    const { projectTitle, problemStatement, solution} = req.body;
+router.post("/newProject", async (req, res) => {
+    const { projectTitle, problemStatement, solution } = req.body;
 
-    if(!projectTitle|| !problemStatement|| !solution)
-    {
-        res.status(422).json({error:"Please fill all the details"});
-    } 
+    if (!projectTitle || !problemStatement || !solution) {
+        res.status(422).json({ error: "Please fill all the details" });
+    }
 
-    try
-    {
+    try {
 
         const newProject = new NewProject({
             projectTitle, problemStatement, solution
-    })
+        })
 
-        const savedProject =    await newProject.save();
+        const savedProject = await newProject.save();
 
 
         res.status(200).json("project added");
         console.log(savedProject);
 
 
-    }catch(e)
-    {
-        
+    } catch (e) {
+
         res.status(500).json(e)
         console.log(e)
     }
@@ -41,7 +38,7 @@ router.post("/newProject", async (req, res)=>{
 
 // get project pitch-deck (hod) 
 
-router.get("/newProject", verifyTokenAndFaculty, async (req, res)=>{
+router.get("/newProject", async (req, res) => {
     projectDetails = await NewProject.find();
 
     res.status(200).json(projectDetails)
@@ -51,19 +48,18 @@ router.get("/newProject", verifyTokenAndFaculty, async (req, res)=>{
 
 // post project Recruitment 
 
-router.post("/newProject/recruitment", verifyTokenAndAuthorization, async (req, res)=>{
-    const {projectTitle, problemStatement, criteria} = req.body;
+router.post("/newProject/recruitment", verifyTokenAndAuthorization, async (req, res) => {
+    const { projectTitle, problemStatement, criteria } = req.body;
 
-    if(!projectTitle|| !problemStatement|| !criteria)
-    {
-        res.status(422).json({error:"Please fill all the details"});
-    } 
+    if (!projectTitle || !problemStatement || !criteria) {
+        res.status(422).json({ error: "Please fill all the details" });
+    }
 
-    try{
+    try {
 
         const newProjectRec = new NewProjectRec({
-            projectTitle, problemStatement, criteria : criteria
-    })
+            projectTitle, problemStatement, criteria: criteria
+        })
 
         await newProjectRec.save();
 
@@ -71,8 +67,7 @@ router.post("/newProject/recruitment", verifyTokenAndAuthorization, async (req, 
         res.status(200).json("project recruitment posted");
         console.log(newProjectRec);
 
-    }catch(e)
-    {
+    } catch (e) {
         res.status(500).json(e)
     }
 })
@@ -81,13 +76,12 @@ router.post("/newProject/recruitment", verifyTokenAndAuthorization, async (req, 
 //  get project recruitment details (student)
 
 
-router.get("/newProject/:id/recruitment/details", async (req, res)=>{
-    try{
+router.get("/newProject/:id/recruitment/details", async (req, res) => {
+    try {
         projectRecDetails = await NewProjectRec.findById(req.params.id);
 
-    res.status(200).json(projectRecDetails)
-    }catch(e)
-    {
+        res.status(200).json(projectRecDetails)
+    } catch (e) {
         res.status(500).json(e)
     }
 })
@@ -95,88 +89,83 @@ router.get("/newProject/:id/recruitment/details", async (req, res)=>{
 
 // post project update
 
-router.post("/newProject/approval/:id", verifyTokenAndHod, async (req, res)=>{
-    
-    const {status, comments} = req.body;
+router.post("/newProject/approval/:id", verifyTokenAndHod, async (req, res) => {
 
-    if(!status || !comments) 
-    {
-        res.status(422).json({error:"Please fill all the details"});
-        
+    const { status, comments } = req.body;
+
+    if (!status || !comments) {
+        res.status(422).json({ error: "Please fill all the details" });
+
     }
 
-    try{
+    try {
         const projectStatus = await NewProject.findByIdAndUpdate(req.params.id, {
-            $set:{
-                
-                        status,
-                        comments,
-                 
+            $set: {
+
+                status,
+                comments,
+
             }
         })
 
         res.status(200).json(projectStatus)
-    }catch(e)
-    {
+    } catch (e) {
         res.status(500).json(e)
     }
 })
 
 // get project update
 
-router.get("/newProject/approval/:id", verifyTokenAndFaculty, async (req, res)=>{
-    
-    try{
+router.get("/newProject/approval/:id", verifyTokenAndFaculty, async (req, res) => {
+
+    try {
         const project = await NewProject.findById(req.params.id)
 
-        const {status, comments} = project 
+        const { status, comments } = project
 
         res.status(200).json({
             status,
             comments
         })
-    }catch(e)
-    {
+    } catch (e) {
         res.status(500).json(e)
     }
 })
 
 // get ongoing and finished
 
-router.get("/", verifyTokenAndFaculty, async (req, res)=>{
+router.get("/specific", async (req, res) => {
     const queryOngoing = req.query.ongoing
     const queryPrevious = req.query.previous
 
-    
 
-    try{
+
+    try {
         let project
 
-        if(queryOngoing)
-        {
+        if (queryOngoing) {
 
-            project = await NewProject.find({status:"accepted"})
+            project = await NewProject.find({ status: "accepted" })
 
-            if(project==="accepted")
-            {
+            if (project.status === "accepted") {
+                console.log(project)
                 res.status(200).json(project);
             }
 
         }
-        else if(queryPrevious)
-        {   
+        else if (queryPrevious) {
 
-            project = await NewProject.find({status:"completed"})
+            project = await NewProject.find({ status: "completed" })
 
 
-            if(project==="completed")
-            {
+            if (project.status === "completed") {
+                console.log(project)
+
                 res.status(200).json(project);
 
             }
         }
-    }catch(e)
-    {
+    } catch (e) {
         res.status(500).json(e)
     }
 })
@@ -185,43 +174,40 @@ router.get("/", verifyTokenAndFaculty, async (req, res)=>{
 
 // student application
 
-router.post("/newProject/:id", async (req, res)=>{
+router.post("/newProject/:id", async (req, res) => {
 
 
-    const {linkedInProfile, githubProfile, resumeLink} = req.body;
+    const { linkedInProfile, githubProfile, resumeLink } = req.body;
 
-    if(!linkedInProfile || !githubProfile || resumeLink) 
-    {
-        res.status(422).json({error:"Please fill all the details"})
+    if (!linkedInProfile || !githubProfile || resumeLink) {
+        res.status(422).json({ error: "Please fill all the details" })
 
     }
 
-    try{
-        const newApplication = NewProjectRecruitment.findByIdAndUpdate(req.params.id,{$set:{linkedInProfile, githubProfile, resumeLink}}, {new:true})
+    try {
+        const newApplication = NewProjectRecruitment.findByIdAndUpdate(req.params.id, { $set: { linkedInProfile, githubProfile, resumeLink } }, { new: true })
 
         res.status(200).json("applied");
         console.log(newApplication)
-    }catch(e)
-    {
+    } catch (e) {
         res.status(500).json(e);
     }
 
-} )
+})
 
 // get application
 
-router.get("/newProject/:id", verifyTokenAndFaculty, async (req, res)=>{
-    try{
+router.get("/newProject/:id", verifyTokenAndFaculty, async (req, res) => {
+    try {
         const applicationDetails = await NewProjectRecruitment.findById(req.params.id);
 
-        const {linkedInProfile, githubProfile, resumeLink, ...others} = applicationDetails
+        const { linkedInProfile, githubProfile, resumeLink, ...others } = applicationDetails
 
-    res.status(200).json({linkedInProfile:linkedInProfile, githubProfile:githubProfile, resumeLink:resumeLink})
-    }catch(e)
-    {
+        res.status(200).json({ linkedInProfile: linkedInProfile, githubProfile: githubProfile, resumeLink: resumeLink })
+    } catch (e) {
         res.status(500).json(e);
     }
-}  )
+})
 
 
 
