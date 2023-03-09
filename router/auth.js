@@ -1,7 +1,6 @@
 const express = require("express")
 const router = express.Router()
 const bcrypt = require("bcryptjs")
-const User = require("../models/User")
 const Student = require("../models/StudentProfile")
 const Faculty = require("../models/FacultyProfile")
 const Club = require("../models/ClubProfie")
@@ -13,9 +12,8 @@ router.post("/register", async (req, res) => {
         res.status(422).json({ error: "Please fill all the details" });
     }
 
-    try {
-
-        if (userType === "student") {
+    if (userType === "student") {
+        try {
             const userExists = await Student.findOne({ email });
 
             if (userExists) {
@@ -31,20 +29,19 @@ router.post("/register", async (req, res) => {
                     password,
                     cnfPassword
                 });
+                const createUser = await newUser.save();
 
-                try {
-                    const createUser = await newUser.save();
-
-                    res.status(201).json({ message: "user registered successfully" });
-                    console.log(createUser);
-
-                } catch (e) {
-                    res.status(500).json({ error: "Internal server error", e });
-                }
+                res.status(201).json({ message: "user registered successfully" });
+                console.log(createUser);
             }
-
+        } catch (e) {
+            console.log(e)
+            res.status(500).json({ error: "Internal server error", e });
         }
-        else if (userType === "faculty") {
+
+    }
+    else if (userType === "faculty") {
+        try {
             const userExists = await Faculty.findOne({ email });
 
             if (userExists) {
@@ -61,19 +58,18 @@ router.post("/register", async (req, res) => {
                     cnfPassword
                 });
 
-                try {
-                    const createUser = await newUser.save();
+                const createUser = await newUser.save();
 
-                    res.status(201).json({ message: "user registered successfully" });
-                    console.log(createUser);
-
-                } catch (e) {
-                    console.log(e)
-                    res.status(500).json({ error: "Internal server error", e });
-                }
+                res.status(201).json({ message: "user registered successfully" });
+                console.log(createUser);
             }
+        } catch (e) {
+            console.log(e)
+            res.status(500).json({ error: "Internal server error", e });
         }
-        else if (userType === "club") {
+    }
+    else if (userType === "club") {
+        try {
             const userExists = await Club.findOne({ email });
 
             if (userExists) {
@@ -90,20 +86,17 @@ router.post("/register", async (req, res) => {
                     cnfPassword
                 });
 
-                try {
-                    const createUser = await newUser.save();
 
-                    res.status(201).json({ message: "user registered successfully" });
-                    console.log(createUser);
+                const createUser = await newUser.save();
 
-                } catch (e) {
-                    res.status(500).json({ error: "Internal server error", e });
-                }
+                res.status(201).json({ message: "user registered successfully" });
+                console.log(createUser);
+
             }
+        } catch (e) {
+            console.log(e)
+            res.status(500).json({ error: "Internal server error", e });
         }
-
-    } catch (e) {
-        console.log(e);
     }
 })
 

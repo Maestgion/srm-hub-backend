@@ -77,7 +77,7 @@ router.put("/profile/faculty/:id", async (req, res) => {
         }, { new: true })
 
 
-        res.status(201).json({ message: "profile completed" });
+        res.status(201).json({ message: "profile completed", profile });
         console.log(profile);
 
 
@@ -106,7 +106,7 @@ router.put("/profile/club/:id", async (req, res) => {
             }
         }, { new: true })
 
-       
+
 
         res.status(201).json({ message: "profile completed" });
         // res.status(201).json(profile);

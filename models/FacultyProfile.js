@@ -43,8 +43,6 @@ const facultySchema = new mongoose.Schema({
     regNo:
     {
         type: String,
-
-        unique: true
     },
     dept:
     {
