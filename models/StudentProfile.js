@@ -61,7 +61,11 @@ const studentSchema = new mongoose.Schema({
             }
 
         }
-    ]
+    ],
+    savedPosts: {
+        type: Array,
+        default: []
+    }
 
 
 

@@ -47,7 +47,12 @@ const facultySchema = new mongoose.Schema({
     phone: {
         type: Number,
         required: true,
+    },
+    savedPosts: {
+        type: Array,
+        default: []
     }
+
 
 
 }, { timestamps: true });

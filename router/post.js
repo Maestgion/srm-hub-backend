@@ -1,7 +1,10 @@
 const express = require("express")
 const { verifyTokenAndAuthorization } = require("../middlewares/verifyToken")
+const Club = require("../models/ClubProfie")
+const Faculty = require("../models/FacultyProfile")
 const router = express.Router()
 const Post = require("../models/Post")
+const Student = require("../models/StudentProfile")
 const User = require("../models/User")
 
 // post 
@@ -41,7 +44,7 @@ router.post("/create", verifyTokenAndAuthorization, async (req, res)=>{
 
 // update post 
 
-router.post("/edit/:id", verifyTokenAndAuthorization, async(req, res)=>{
+router.put("/edit/:id", verifyTokenAndAuthorization, async(req, res)=>{
 try{
   
         const updatedPost = await Post.findByIdAndUpdate(req.params.id,{
@@ -61,7 +64,7 @@ try{
 // delete post 
 
 
-router.post("/delete/:id", verifyTokenAndAuthorization, async(req, res)=>{
+router.delete("/delete/:id", verifyTokenAndAuthorization, async(req, res)=>{
     try{
        
     
@@ -80,9 +83,9 @@ router.post("/delete/:id", verifyTokenAndAuthorization, async(req, res)=>{
     
     })
 
-    // get posts
+// get posts
 
-    router.get("/:id", verifyTokenAndAuthorization, async (req, res)=>{
+router.get("/:id", verifyTokenAndAuthorization, async (req, res)=>{
 
         try{   
 
@@ -102,6 +105,67 @@ router.post("/delete/:id", verifyTokenAndAuthorization, async(req, res)=>{
     } )
 
 
-    // 
+// saved Post 
+
+router.put("/saved", verifyTokenAndAuthorization, async (req, res)=>{
+    
+    try{    
+
+        const user = await Post.findById(req.rootUser.id)
+
+        const post = await Post.findbyId({userId:req.rootUser.id})
+
+
+
+        if(user.userType==="student")
+        {
+            const savedPost = await Student.findByIdAndUpdate(user.id, {
+                $push:{
+                    savedPosts:{
+                            post
+                    }
+                }
+            })
+
+            res.status(200).json(savedPost)
+        }
+        else if(user.userType==="club")
+        {
+            const savedPost = await Club.findByIdAndUpdate(user.id, {
+                $push:{
+                    savedPosts:{
+                            post
+                    }
+                }
+            })
+
+            res.status(200).json(savedPost)
+        }
+        else if(user.userType==="faculty")
+        {
+            const savedPost = await Faculty.findByIdAndUpdate(user.id, {
+                $push:{
+                    savedPosts:{
+                            post
+                    }
+                }
+            })
+
+            res.status(200).json(savedPost)
+        }
+
+    }catch(e)
+    {
+        
+        res.status(500).json(e)
+    }
+})
+
+
+
+
+
+
+    
 
 module.exports = router

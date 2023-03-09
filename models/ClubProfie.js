@@ -55,7 +55,12 @@ const clubSchema = new mongoose.Schema({
     leadPhoneNo: {
         type: Number,
         required: true,
+    },
+    savedPosts: {
+        type: Array,
+        default: []
     }
+
 
 
 })
