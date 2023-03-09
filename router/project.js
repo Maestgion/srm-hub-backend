@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const NewProject = require("../models/NewProject")
 const NewProjectRec = require("../models/NewProjectRecruitement")
-const {verifyTokenAndFaculty, verifyTokenAndAuthorization, verifyTokenAndHod} = require("../middlewares/verifyToken")
+const {verifyTokenAndFaculty, verifyTokenAndAuthorization, verifyTokenAndHod} = require("../middlewares/verifyToken");
+const NewProjectRecruitment = require("../models/NewProjectRecruitement");
 
 
 // post project pitch-deck (faculty) 
@@ -47,7 +48,7 @@ router.get("/newProject", verifyTokenAndFaculty, async (req, res)=>{
 
 
 
-// project Recruitment 
+// post project Recruitment 
 
 router.post("/newProject/recruitment", verifyTokenAndAuthorization, async (req, res)=>{
     const {projectTitle, problemStatement, criteria} = req.body;
@@ -79,9 +80,9 @@ router.post("/newProject/recruitment", verifyTokenAndAuthorization, async (req, 
 //  get project recruitment details (student)
 
 
-router.get("/newProject/recruitment/Details", async (req, res)=>{
+router.get("/newProject/:id/recruitment/details", async (req, res)=>{
     try{
-        projectRecDetails = await NewProjectRec.find();
+        projectRecDetails = await NewProjectRec.findById(req.params.id);
 
     res.status(200).json(projectRecDetails)
     }catch(e)
@@ -178,6 +179,50 @@ router.get("/", verifyTokenAndFaculty, async (req, res)=>{
         res.status(500).json(e)
     }
 })
+
+
+
+// student application
+
+router.post("/newProject/:id", async (req, res)=>{
+
+
+    const {linkedInProfile, githubProfile, resumeLink} = req.body;
+
+    if(!linkedInProfile || !githubProfile || resumeLink) 
+    {
+        res.status(422).json({error:"Please fill all the details"})
+
+    }
+
+    try{
+        const newApplication = NewProjectRecruitment.findByIdAndUpdate(req.params.id,{$set:{linkedInProfile, githubProfile, resumeLink}}, {new:true})
+
+        res.status(200).json("applied");
+        console.log(newApplication)
+    }catch(e)
+    {
+        res.status(500).json(e);
+    }
+
+} )
+
+// get application
+
+router.get("/newProject/:id", verifyTokenAndFaculty, async (req, res)=>{
+    try{
+        const applicationDetails = await NewProjectRecruitment.findById(req.params.id);
+
+        const {linkedInProfile, githubProfile, resumeLink, ...others} = applicationDetails
+
+    res.status(200).json({linkedInProfile:linkedInProfile, githubProfile:githubProfile, resumeLink:resumeLink})
+    }catch(e)
+    {
+        res.status(500).json(e);
+    }
+}  )
+
+
 
 
 module.exports = router;
