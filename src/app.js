@@ -8,8 +8,13 @@ const projectRoute = require("../router/project")
 const researchRoute = require("../router/research")
 const applyRoute = require("../router/apply")
 const reportRoute = require("../router/studentReport")
+const cors = require("cors")
+const helmet = require("helmet")
 
 app.use(express.json());
+app.use(cors())
+app.use(helmet())
+
 
 app.use("/api/users", authRoute);
 app.use("/api/users", userRoute)
