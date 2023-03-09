@@ -91,9 +91,9 @@ router.put("/profile/faculty/:id", async (req, res) => {
 
 router.put("/profile/club/:id", async (req, res) => {
 
-    const { clubName, startingYear, clubEmail, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo } = req.body;
+    const { clubName, startingYear, email, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo } = req.body;
 
-    if (!clubName || !startingYear || !clubEmail || !clubType || !mentorTitle || !mentorName || !dept || !deptHod || !leadName || !leadRegNo || !leadPhoneNo) {
+    if (!clubName || !startingYear || !email || !clubType || !mentorTitle || !mentorName || !dept || !deptHod || !leadName || !leadRegNo || !leadPhoneNo) {
         res.status(422).json({ error: "Please fill all the details" });
     }
 
@@ -101,14 +101,14 @@ router.put("/profile/club/:id", async (req, res) => {
 
         const profile = await Club.findByIdAndUpdate(req.params.id, {
             $set: {
-                clubName, startingYear, clubEmail, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo, isComplete: true
+                clubName, startingYear, email, clubType, mentorTitle, mentorName, dept, deptHod, leadName, leadRegNo, leadPhoneNo, isComplete: true
 
             }
         }, { new: true })
 
 
 
-        res.status(201).json({ message: "profile completed" });
+        res.status(201).json({ message: "profile completed", profile });
         // res.status(201).json(profile);
         console.log(profile);
 

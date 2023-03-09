@@ -38,15 +38,8 @@ const studentSchema = new mongoose.Schema({
     regNo:
     {
         type: String,
-
-        unique: true
     },
-    email:
-    {
-        type: String,
 
-        unique: true
-    },
     dept:
     {
         type: String,
