@@ -3,64 +3,70 @@ const mongoose = require("mongoose")
 const studentSchema = new mongoose.Schema({
     firstName:
     {
-        type:String,
+        type: String,
         required: true,
     },
     lastName:
     {
-        type:String,
+        type: String,
         required: true,
     },
     regNo:
     {
-        type:String,
+        type: String,
+        required: true,
+        unique: true
+    },
+    email:
+    {
+        type: String,
         required: true,
         unique: true
     },
     dept:
     {
-        type:String,
+        type: String,
         required: true,
     },
     section:
     {
-        type:String,
+        type: String,
         required: true,
     },
-    year:{
-        type:String,
+    year: {
+        type: String,
         required: true,
     },
-    phone:{
-        type:Number,
+    phone: {
+        type: Number,
         required: true,
     },
-    achievements:[
+    achievements: [
         {
-            competitionName:{
-                type: String, 
+            competitionName: {
+                type: String,
                 required: true,
             },
-            position:{
+            position: {
                 type: String,
                 required: true
             },
-            proofLink:{
+            proofLink: {
                 type: String,
                 required: true
             },
-            date:{
+            date: {
                 type: Date,
                 required: true
             }
 
         }
     ]
-   
-    
 
-},{timestamps:true});
+
+
+}, { timestamps: true });
 
 const Student = mongoose.model("student", studentSchema);
 
-module.exports=Student
+module.exports = Student

@@ -4,59 +4,59 @@ const mongoose = require("mongoose")
 const clubSchema = new mongoose.Schema({
     clubName:
     {
-        type:String,
+        type: String,
         required: true,
     },
     startingYear:
     {
-        type:Number,
+        type: Number,
         required: true,
     },
     clubEmail:
     {
-        type:Number,
+        type: String,
         required: true,
         unique: true
     },
-    clubType:{
-        
-        type:String,
+    clubType: {
+
+        type: String,
         required: true,
     },
     mentorTitle:
     {
-        type:String,
+        type: String,
         required: true,
     },
     mentorName:
     {
-        type:String,
+        type: String,
         required: true,
     },
     dept:
     {
-        type:String,
+        type: String,
         required: true,
     },
     deptHod:
     {
-        type:String,
+        type: String,
         required: true,
     },
     leadName:
     {
-        type:String,
+        type: String,
         required: true,
     },
-    leadRegNo:{
-        type:String,
+    leadRegNo: {
+        type: String,
         required: true,
     },
-    leadPhoneNo:{
-        type:Number,
+    leadPhoneNo: {
+        type: Number,
         required: true,
     }
-    
+
 
 })
 
